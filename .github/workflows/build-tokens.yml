@@ -1,0 +1,46 @@
+name: Build Design Tokens
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tokens/**'
+      - 'config/**'
+      - 'scripts/**'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build All Platforms
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate tokens
+        run: node scripts/validate-tokens.js
+
+      - name: Build all platforms
+        run: npm run build
+
+      - name: Generate Tailwind config
+        run: npm run build:tailwind
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vibors-tokens-build
+          path: build/
+          retention-days: 30
