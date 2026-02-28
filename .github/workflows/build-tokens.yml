@@ -8,22 +8,17 @@ on:
       - 'tokens/**'
       - 'config/**'
       - 'scripts/**'
-
   workflow_dispatch:
 
 jobs:
   build:
     name: Build All Platforms
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
