@@ -3,7 +3,6 @@ const { registerTransforms } = require('@tokens-studio/sd-transforms');
 
 registerTransforms(StyleDictionary);
 
-// Custom parser: flatten Tokens Studio collection wrappers
 StyleDictionary.registerParser({
   pattern: /tokens\.json$/,
   parse: ({ contents }) => {
@@ -20,7 +19,6 @@ StyleDictionary.registerParser({
 
 module.exports = {
   source: ['tokens/tokens.json'],
-
   platforms: {
     web: {
       transformGroup: 'tokens-studio',
@@ -45,7 +43,10 @@ module.exports = {
         {
           destination: 'ViborsTokens.swift',
           format: 'ios-swift/class.swift',
-          options: { className: 'ViborsTokens', accessControl: 'public' },
+          options: {
+            className: 'ViborsTokens',
+            accessControl: 'public',
+          },
         },
       ],
     },
