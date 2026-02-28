@@ -1,16 +1,17 @@
 const StyleDictionary = require('style-dictionary');
-const { registerTransforms, preprocessTokens } = require('@tokens-studio/sd-transforms');
+const { registerTransforms } = require('@tokens-studio/sd-transforms');
 
 registerTransforms(StyleDictionary);
 
-// Flatten Tokens Studio single-file format
-StyleDictionary.registerPreprocessor({
-  name: 'tokens-studio/flatten',
-  preprocessor: (dictionary) => {
+// Custom parser: flatten Tokens Studio collection wrappers
+StyleDictionary.registerParser({
+  pattern: /tokens\.json$/,
+  parse: ({ contents }) => {
+    const raw = JSON.parse(contents);
     const flat = {};
-    Object.entries(dictionary).forEach(([, tokens]) => {
-      if (typeof tokens === 'object' && !tokens.value) {
-        Object.assign(flat, tokens);
+    Object.entries(raw).forEach(([key, val]) => {
+      if (!key.startsWith('$') && typeof val === 'object') {
+        Object.assign(flat, val);
       }
     });
     return flat;
@@ -19,7 +20,6 @@ StyleDictionary.registerPreprocessor({
 
 module.exports = {
   source: ['tokens/tokens.json'],
-  preprocessors: ['tokens-studio/flatten'],
 
   platforms: {
     web: {
@@ -30,7 +30,7 @@ module.exports = {
         {
           destination: 'tokens.css',
           format: 'css/variables',
-          options: { outputReferences: true },
+          options: { outputReferences: false },
         },
         {
           destination: 'tokens.json',
