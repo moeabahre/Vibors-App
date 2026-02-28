@@ -1,39 +1,19 @@
 {
   "name": "@vibors/design-tokens",
   "version": "1.0.0",
-  "description": "Vibors design tokens — single source of truth for Web, iOS, and Android",
-  "main": "build/web/tokens.js",
-  "types": "build/web/tokens.d.ts",
-  "files": [
-    "build/",
-    "tokens/"
-  ],
+  "description": "Vibors design tokens",
   "scripts": {
-    "build": "npm run build:web && npm run build:ios && npm run build:android",
-    "build:web": "style-dictionary build --config config/style-dictionary.config.js --platform web/css web/js web/json",
-    "build:ios": "style-dictionary build --config config/style-dictionary.config.js --platform ios/swift",
-    "build:android": "style-dictionary build --config config/style-dictionary.config.js --platform android/xml android/compose",
+    "build": "style-dictionary build --config config/style-dictionary.config.js",
+    "build:web": "style-dictionary build --config config/style-dictionary.config.js --platform web",
+    "build:ios": "style-dictionary build --config config/style-dictionary.config.js --platform ios",
+    "build:android": "style-dictionary build --config config/style-dictionary.config.js --platform android",
     "build:tailwind": "node scripts/generate-tailwind.js",
     "validate": "node scripts/validate-tokens.js",
-    "clean": "rimraf build/",
-    "prebuild": "npm run clean && npm run validate"
+    "clean": "rimraf build/"
   },
-  "dependencies": {},
   "devDependencies": {
     "style-dictionary": "^3.9.2",
     "@tokens-studio/sd-transforms": "^0.14.0",
     "rimraf": "^5.0.0"
-  },
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vibors/design-tokens.git"
-  },
-  "keywords": [
-    "design-tokens",
-    "vibors",
-    "style-dictionary"
-  ]
+  }
 }
